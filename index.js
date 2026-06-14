@@ -31,8 +31,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
   try {
     if (interaction.isChatInputCommand() && interaction.commandName === 'room') {
       await roomCommand.execute(interaction);
-    } else if (interaction.isUserSelectMenu() && interaction.customId === 'room_manage') {
-      await roomCommand.handleManageSelect(interaction);
+    } else if (interaction.isButton() && interaction.customId.startsWith('room_')) {
+      await roomCommand.handleButton(interaction, activeRooms);
+    } else if (interaction.isUserSelectMenu() && interaction.customId === 'room_add_select') {
+      await roomCommand.handleAddSelect(interaction);
+    } else if (interaction.isModalSubmit() && interaction.customId === 'room_rename_modal') {
+      await roomCommand.handleRenameModal(interaction, activeRooms);
     }
   } catch (err) {
     console.error('Ошибка обработки взаимодействия:', err);

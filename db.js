@@ -46,6 +46,8 @@ const stmts = {
   isMemberOf: db.prepare(
     'SELECT 1 FROM room_members WHERE owner_id = ? AND member_id = ?'
   ),
+  getMembers: db.prepare('SELECT member_id FROM room_members WHERE owner_id = ?'),
+  renameRoom: db.prepare('UPDATE rooms SET name = ? WHERE owner_id = ?'),
   deleteMembers: db.prepare('DELETE FROM room_members WHERE owner_id = ?'),
 };
 
@@ -99,5 +101,15 @@ module.exports = {
   /** true, если memberId есть в whitelist комнаты ownerId. */
   isMemberOf(ownerId, memberId) {
     return !!stmts.isMemberOf.get(ownerId, memberId);
+  },
+
+  /** Массив member_id всех участников комнаты владельца. */
+  getMembers(ownerId) {
+    return stmts.getMembers.all(ownerId).map((r) => r.member_id);
+  },
+
+  /** Переименовать комнату владельца. */
+  renameRoom(ownerId, name) {
+    stmts.renameRoom.run(name, ownerId);
   },
 };
