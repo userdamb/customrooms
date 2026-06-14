@@ -1,0 +1,16 @@
+{
+  "name": "customrooms",
+  "version": "1.0.0",
+  "description": "Discord bot for custom private voice rooms",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "node deploy-commands.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7"
+  }
+}
