@@ -11,7 +11,6 @@ const {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  MessageFlags,
   Colors,
 } = require('discord.js');
 
@@ -96,7 +95,6 @@ function noRoom(interaction) {
         Colors.Red
       ),
     ],
-    flags: MessageFlags.Ephemeral,
   });
 }
 
@@ -104,7 +102,7 @@ function noRoom(interaction) {
 
 async function handleCreate(interaction) {
   const { guild, member, user } = interaction;
-  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+  await interaction.deferReply();
 
   if (db.getRoomByOwner(user.id)) {
     return interaction.editReply({
@@ -180,7 +178,6 @@ async function handleManage(interaction) {
       ),
     ],
     components: [manageRow()],
-    flags: MessageFlags.Ephemeral,
   });
 }
 
@@ -210,7 +207,6 @@ async function listMembers(interaction) {
 
   return interaction.reply({
     embeds: [buildEmbed(interaction, 'Список пользователей', `Комната **${room.name}**:\n${list}`)],
-    flags: MessageFlags.Ephemeral,
   });
 }
 
@@ -227,7 +223,6 @@ async function showAddSelect(interaction) {
   return interaction.reply({
     embeds: [buildEmbed(interaction, 'Добавить пользователей', `Комната **${room.name}**: выберите, кого добавить.`)],
     components: [new ActionRowBuilder().addComponents(select)],
-    flags: MessageFlags.Ephemeral,
   });
 }
 
@@ -318,7 +313,6 @@ async function handleRenameModal(interaction, activeRooms) {
   if (!newName) {
     return interaction.reply({
       embeds: [buildEmbed(interaction, 'Ошибка', 'Название не может быть пустым.', Colors.Red)],
-      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -342,7 +336,6 @@ async function handleRenameModal(interaction, activeRooms) {
         `<@${interaction.user.id}>, название комнаты изменено на **${newName}** (роль <@&${room.role_id}>).`
       ),
     ],
-    flags: MessageFlags.Ephemeral,
   });
 }
 
